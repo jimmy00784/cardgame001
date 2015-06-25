@@ -5,5 +5,23 @@
 # Home page
 GET     /                           controllers.Application.index
 
+GET     /game/                      controllers.Game.index
+
+GET     /game/new                   controllers.Game.newGame
+
+POST    /game/:gameId/invite        controllers.Game.invitePlayers(gameId:String)
+
+GET     /game/:gameId/join          controllers.Game.joinGame(gameId:String)
+
+GET     /game/:gameId/start         controllers.Game.startGame(gameId:String)
+
+GET     /game/:gameId               controllers.Game.gameView(gameId:String)
+
+GET     /game/:gameId/player/:playerId          controllers.Game.playerView(gameId:String,playerId:String)
+
+GET     /game/:gameId/play/:playerId/:card      controllers.Game.playCard(gameId:String,playerId:String,card:Int)
+
+GET     /game/:gameId/stats         controllers.Game.gameStats(gameId:String)
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
