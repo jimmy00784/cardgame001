@@ -62,7 +62,7 @@ object Game extends Controller with MongoController {
         "players.0.cardsDown" -> (0 to 3).map{i => deck.toSeq(i)},"players.1.cardsDown" -> (4 to 7).map{i => deck.toSeq(i)},"players.2.cardsDown" -> (8 to 11).map{i => deck.toSeq(i)},"players.3.cardsDown" -> (12 to 16).map{i => deck.toSeq(i)},
         "players.0.cardsUp" -> (16 to 19).map{i => deck.toSeq(i)},"players.1.cardsUp" -> (20 to 23).map{i => deck.toSeq(i)},"players.2.cardsUp" -> (24 to 27).map{i => deck.toSeq(i)},"players.3.cardsUp" -> (28 to 31).map{i => deck.toSeq(i)},
         "players.0.cardsInHand" -> (32 to 36).map{i => deck.toSeq(i)},"players.1.cardsInHand" -> (37 to 41).map{i => deck.toSeq(i)},"players.2.cardsInHand" -> (42 to 46).map{i => deck.toSeq(i)},"players.3.cardsInHand" -> (47 to 51).map{i => deck.toSeq(i)},
-      "currentPlayer" -> 1, "pileValue" -> 2, "started" -> true
+      "currentPlayer" -> 0, "pileValue" -> 2, "started" -> true
       ))) map {
       lastError =>
         if (lastError.inError || lastError.n == 0)
