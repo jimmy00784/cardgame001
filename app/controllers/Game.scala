@@ -1,9 +1,11 @@
 package controllers
 
+import models.GameView
 import play.api.mvc._
 import play.modules.reactivemongo.MongoController
 import reactivemongo.api.collections.default._
 import reactivemongo.bson.{BSONObjectID, BSONDocument}
+import reactivemongo.core.commands.{Unwind, Aggregate}
 import scala.concurrent.ExecutionContext.Implicits.global
 import play.api.libs.json._
 import play.modules.reactivemongo.json.BSONFormats._
@@ -16,6 +18,21 @@ import scala.concurrent.Future
 /**
  * Created by karim on 6/25/15.
  */
+trait Outcome
+case class Normal() extends Outcome
+case class Reset() extends Outcome
+case class Skip() extends Outcome
+case class Reverse() extends Outcome
+case class Destroy() extends Outcome
+case class BadLuck() extends Outcome
+
+trait CardPlayed
+case class CardsInHand(score:Int) extends CardPlayed
+case class CardsUp(score:Int) extends CardPlayed
+case class CardsDown(score:Int) extends CardPlayed
+case class NoCardPlayed() extends CardPlayed
+
+
 object Game extends Controller with MongoController {
 
   lazy val gameColl = db("games")
@@ -76,7 +93,7 @@ object Game extends Controller with MongoController {
   }
 
   def gameView(gameId:String) = Action.async {
-    gameColl.find(BSONDocument("_id" -> gameId),BSONDocument("cards" -> 0, "players.cardsInHand" -> 0,"players.cardsDown" -> 0)).one.map {
+    gameColl.find(BSONDocument("_id" -> gameId)).one[GameView].map {
       optGame =>
         optGame match {
           case Some(game) => Ok(Json.toJson(game))
@@ -97,6 +114,7 @@ object Game extends Controller with MongoController {
 
   def playCard(gameId:String,playerId:String,card:Int) = Action.async {
     // Verify Player's turn
+
     val futUpdate:Future[Option[BSONDocument]] = gameColl.find(BSONDocument("_id" -> gameId,"active"-> true,"started" -> true)).one.map {
       case Some(game) => {
         val players = game.getAs[BSONArray]("players").getOrElse(BSONArray())
@@ -114,11 +132,6 @@ object Game extends Controller with MongoController {
               val pileValue = game.getAs[Int]("pileValue").getOrElse(2)
               val direction = game.getAs[Int]("direction").getOrElse(1)
 
-              trait CardPlayed
-              case class CardsInHand(score:Int) extends CardPlayed
-              case class CardsUp(score:Int) extends CardPlayed
-              case class CardsDown(score:Int) extends CardPlayed
-              case class NoCardPlayed() extends CardPlayed
 
               val playedCard = {
                 if (cardsInHand.length > 0) {
@@ -150,13 +163,6 @@ object Game extends Controller with MongoController {
                 case _ => 0
               }
 
-              trait Outcome
-              case class Normal() extends Outcome
-              case class Reset() extends Outcome
-              case class Skip() extends Outcome
-              case class Reverse() extends Outcome
-              case class Destroy() extends Outcome
-              case class BadLuck() extends Outcome
 
               val faceValue = if((score % 13) == 0)  13 else (score % 13)
               val outcome = {
@@ -235,9 +241,6 @@ object Game extends Controller with MongoController {
                   }}
                 }
               }
-
-
-
               Some(updateDocument)
             }
             else {

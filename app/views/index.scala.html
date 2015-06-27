@@ -23,9 +23,16 @@
                 <div>Current Player: {{ currentGame.currentPlayer}}</div>
                 <div>Direction: {{ currentGame.direction }}</div>
                 <ul>
+                    <li>Players' Cards</li>
                     <li ng-repeat="player in currentGame.players">{{ player.id }}
                         <div>
-                            <a href="#" ng-click="playCard(player.id,$index)"><img ng-repeat="card in player.cardsUp" ng-src="/assets/images/cards/{{ getCardPic(card) }}"></img></a>
+                            <div>In hand: {{ player.cardsInHandCount }}, Down: {{ player.cardsDownCount }}</div>
+                            <img ng-repeat="card in player.cardsUp" ng-src="/assets/images/cards/{{ getCardPic(card) }}"></img>
+                        </div>
+                    </li>
+                    <li>Pile
+                        <div>
+                            <img ng-repeat="card in currentGame.pile" ng-src="/asset/images/cards/{{ getCardPic(card) }}"></img>
                         </div>
                     </li>
                 </ul>

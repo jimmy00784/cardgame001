@@ -9,7 +9,7 @@ gameApp.controller "GameController",['$scope','$http',($scope,$http) ->
             $scope.games = data
     $scope.newGame = ()->
         $http.get("/game/new").success ->
-            getGames()
+            $scope.getGames()
     $scope.getGame = (gameId) ->
         $http.get("/game/" + gameId).success (data) ->
             $scope.currentGame = data
@@ -22,7 +22,7 @@ gameApp.controller "GameController",['$scope','$http',($scope,$http) ->
             else suitname = "diamonds"
 
         score = card % 13
-        console.log suit + " " + score
+        #console.log suit + " " + score
         facevalue = suitname
         switch score
             when 1 then facevalue = facevalue + "-" + "a" + "-150.png"
