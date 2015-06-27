@@ -1,0 +1,14 @@
+<div>
+    <h3>In Hand</h3>
+    <ul>
+        <li ng-repeat="card in cardsInHand"><img ng-src="/images/cards/{{ getCard(card) }}"/></li>
+    </ul>
+    <h3>Up</h3>
+    <ul>
+        <li ng-repeat="card in cardsUp"><img ng-src="/images/cards/{{ getCard(card) }}"/></li>
+    </ul>
+    <h3>Down</h3>
+    <ul>
+        <li ng-repeat="card in cardsDown"><img ng-src="/images/cards/black-blue-150-1.png"/></li>
+    </ul>
+</div>

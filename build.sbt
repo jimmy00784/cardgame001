@@ -12,7 +12,8 @@ libraryDependencies ++= Seq(
   ws,
 //  specs2 % Test
   "org.reactivemongo" %% "reactivemongo" % "0.10.5.0.akka23",
-  "org.reactivemongo" %% "play2-reactivemongo" % "0.10.5.0.akka23"
+  "org.reactivemongo" %% "play2-reactivemongo" % "0.10.5.0.akka23",
+  "org.webjars" % "angularjs" % "1.4.1"
 )
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"

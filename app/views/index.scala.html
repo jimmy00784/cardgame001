@@ -1,7 +1,36 @@
-@(message: String)
+<!DOCTYPE html>
 
-@main("Welcome to Play") {
+<html lang="en" ng-app="gameApp" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Lucky B</title>
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+    <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+    <script src="@routes.Assets.versioned("javascripts/hello.js")" type="text/javascript"></script>
+    <script src="/assets/lib/angularjs/angular.js" type="text/javascript"></script>
+    <script src="/assets/lib/angularjs/angular-route.js" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("javascripts/game.js")"></script>
+</head>
+    <body>
+        <div ng-controller="GameController">
+            <ul>
+                <li ng-repeat="game in games"><a href="#" ng-click="getGame(game)" >{{ game }}</a></li>
+            </ul>
+            <input type="button" ng-click="newGame()" value="New Game"></input>
+            <input type="button" ng-click="getGames()" value="Get Games"></input>
 
-    @play20.welcome(message)
-
-}
+            <div>
+                <div>Pile Value: {{ currentGame.pileValue }}</div>
+                <div>Current Player: {{ currentGame.currentPlayer}}</div>
+                <div>Direction: {{ currentGame.direction }}</div>
+                <ul>
+                    <li ng-repeat="player in currentGame.players">{{ player.id }}
+                        <div>
+                            <a href="#" ng-click="playCard(player.id,$index)"><img ng-repeat="card in player.cardsUp" ng-src="/assets/images/cards/{{ getCardPic(card) }}"></img></a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div ng-view></div>
+    </body>
+</html>
